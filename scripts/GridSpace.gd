@@ -1,35 +1,54 @@
 extends Area2D
 
 export(Color) var hover_color = Color(1,1,1)
-export(Color) var default_color = Color(0,0,0)
+export(Color) var available_color = Color(0,0,0)
 var available = false
 
+onready var constants = get_node("/root/Constants")
 onready var player = get_node("/root/Game/Player")
-onready var sprite = $Sprite
-
-func _ready():
-	modulate = default_color
+onready var grid_sprite = $GridSprite
+onready var cloud = get_parent()
+onready var game = get_node("/root/Game")
+onready var inactive_color = grid_sprite.modulate
+onready var weather = constants.CLOUD
 
 func _process(delta):
-	if available and not sprite.visible:
-		sprite.visible = true
-	elif not available and sprite.visible:
-		sprite.visible = false
+	pass
+
+func set_weather(new_weather):
+	weather = new_weather
+
+func set_available():
+		available = true
+		grid_sprite.modulate = available_color
 
 func _on_GridSpace_input_event(viewport, event, shape_idx):
 	if available and event is InputEventMouseButton and event.is_pressed():
 		player.move(position)
+		game.step()
+		affect_player()
+
+func affect_player():
+	pass
 
 func _on_GridSpace_area_shape_entered(area_id, area, area_shape, local_shape):
 	if area.get_parent().name == "Player":
-		available = true
+		set_available()
 
 func _on_GridSpace_area_shape_exited(area_id, area, area_shape, local_shape):
+	if not area:
+		return
+
 	if area.get_parent().name == "Player":
 		available = false
+		grid_sprite.modulate = inactive_color
 
 func _on_GridSpace_mouse_entered():
-	modulate = hover_color
+	if available:
+		grid_sprite.modulate = hover_color
 
 func _on_GridSpace_mouse_exited():
-	modulate = default_color
+	if available:
+		grid_sprite.modulate = available_color
+	else:
+		grid_sprite.modulate = inactive_color

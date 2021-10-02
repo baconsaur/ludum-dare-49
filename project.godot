@@ -14,6 +14,10 @@ config/name="Ludum Dare 49"
 run/main_scene="res://scenes/Menu.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Constants="*res://scripts/util/Constants.gd"
+
 [input]
 
 ui_left={
