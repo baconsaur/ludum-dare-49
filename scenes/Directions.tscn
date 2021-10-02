@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 1.84384, 2.0631 )
+
+[node name="Directions" type="Area2D"]
+
+[node name="NE" type="CollisionShape2D" parent="."]
+position = Vector2( 16, 0 )
+shape = SubResource( 1 )
+
+[node name="SE" type="CollisionShape2D" parent="."]
+position = Vector2( 16, 16 )
+shape = SubResource( 1 )
+
+[node name="SW" type="CollisionShape2D" parent="."]
+position = Vector2( -16, 16 )
+shape = SubResource( 1 )
+
+[node name="NW" type="CollisionShape2D" parent="."]
+position = Vector2( -16, 0 )
+shape = SubResource( 1 )

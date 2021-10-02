@@ -112,6 +112,7 @@ animations = [ {
 } ]
 
 [node name="WeatherCard" type="TextureRect"]
+modulate = Color( 0.454902, 0.454902, 0.454902, 1 )
 margin_right = 96.0
 margin_bottom = 96.0
 rect_min_size = Vector2( 96, 96 )

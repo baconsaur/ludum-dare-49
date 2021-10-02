@@ -18,9 +18,8 @@ func set_weather(new_weather):
 		effect_sprite.texture = default_sprite
 
 func set_available():
-	if not weather == constants.STORM:
-		available = true
-		grid_sprite.modulate = available_color
+	available = true
+	grid_sprite.modulate = available_color
 
 func affect_player():
 	if weather == constants.STORM:
@@ -29,3 +28,4 @@ func affect_player():
 		game.load_next_level()
 	if weather == constants.SNOW:
 		player.slide()
+	.affect_player()

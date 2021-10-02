@@ -13,7 +13,10 @@ onready var inactive_color = grid_sprite.modulate
 onready var weather = constants.CLOUD
 
 func _process(delta):
-	pass
+	if player.is_moving and grid_sprite.visible:
+		grid_sprite.visible = false
+	elif not player.is_moving and not grid_sprite.visible:
+		grid_sprite.visible = true
 
 func set_weather(new_weather):
 	weather = new_weather
@@ -23,23 +26,24 @@ func set_available():
 		grid_sprite.modulate = available_color
 
 func _on_GridSpace_input_event(viewport, event, shape_idx):
-	if available and event is InputEventMouseButton and event.is_pressed():
+	if player.is_moving or not available:
+		return
+	if event is InputEventMouseButton and event.is_pressed():
 		player.move(position)
-		game.step()
 		affect_player()
 
 func affect_player():
 	pass
 
 func _on_GridSpace_area_shape_entered(area_id, area, area_shape, local_shape):
-	if area.get_parent().name == "Player":
+	if area.name == "Directions":
 		set_available()
 
 func _on_GridSpace_area_shape_exited(area_id, area, area_shape, local_shape):
 	if not area:
 		return
 
-	if area.get_parent().name == "Player":
+	if area.name == "Directions":
 		available = false
 		grid_sprite.modulate = inactive_color
 

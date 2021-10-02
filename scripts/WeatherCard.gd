@@ -11,11 +11,15 @@ func set_weather(weather_state):
 	current_weather = weather_state
 	sprite.set_animation(current_weather)
 	if active:
-		sprite.play()
+		display_active()
 
 func activate():
 	active = true
+	display_active()
+
+func display_active():
 	sprite.play()
+	modulate = Color(1,1,1)
 
 func remove():
 	queue_free()

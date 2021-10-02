@@ -1,28 +1,24 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/GridSpace.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scripts/Cloud.gd" type="Script" id=2]
-[ext_resource path="res://sprites/cloud.png" type="Texture" id=3]
+[ext_resource path="res://scenes/CloudSprite.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Coin.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/WaterGridSpace.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/Coin.tscn" type="PackedScene" id=5]
-[ext_resource path="res://sprites/spawn_tile.png" type="Texture" id=6]
+[ext_resource path="res://scenes/SpawnPoint.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/Cloud.gd" type="Script" id=6]
 
 [node name="Cloud" type="Node2D"]
+pause_mode = 2
 position = Vector2( 0, 1 )
-script = ExtResource( 2 )
-weather_events = [ "cloud", "snow", "storm", "rain", "rain" ]
+script = ExtResource( 6 )
+weather_events = [ "cloud", "rain", "cloud", "snow" ]
 
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 0, 4 )
-texture = ExtResource( 3 )
+[node name="CloudSprite" parent="." instance=ExtResource( 2 )]
 
 [node name="Grid" type="Node2D" parent="."]
 
 [node name="GridSpace" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( -48, -1 )
-
-[node name="GridSpace2" parent="Grid" instance=ExtResource( 1 )]
-position = Vector2( -32, -9 )
 
 [node name="GridSpace3" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( -16, -17 )
@@ -30,14 +26,14 @@ position = Vector2( -16, -17 )
 [node name="GridSpace4" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( 0, -25 )
 
-[node name="GridSpace5" parent="Grid" instance=ExtResource( 1 )]
-position = Vector2( 16, -17 )
-
 [node name="GridSpace6" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( 0, -9 )
 
 [node name="GridSpace7" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( -16, -1 )
+
+[node name="GridSpace11" parent="Grid" instance=ExtResource( 1 )]
+position = Vector2( -32, -9 )
 
 [node name="GridSpace8" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( -32, 7 )
@@ -52,7 +48,7 @@ position = Vector2( 0, 7 )
 position = Vector2( 48, -1 )
 
 [node name="GridSpace15" parent="Grid" instance=ExtResource( 1 )]
-position = Vector2( 16, 15 )
+position = Vector2( 16, -1 )
 
 [node name="GridSpace16" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( 0, 23 )
@@ -61,16 +57,16 @@ position = Vector2( 0, 23 )
 position = Vector2( 32, 7 )
 
 [node name="WaterGridSpace2" parent="Grid" instance=ExtResource( 4 )]
-position = Vector2( 16, -1 )
+position = Vector2( 16, 15 )
 
 [node name="WaterGridSpace3" parent="Grid" instance=ExtResource( 4 )]
 position = Vector2( 32, -9 )
 
-[node name="Coin" parent="." instance=ExtResource( 5 )]
+[node name="WaterGridSpace4" parent="Grid" instance=ExtResource( 4 )]
+position = Vector2( 16, -17 )
+
+[node name="Coin" parent="." instance=ExtResource( 3 )]
 position = Vector2( 48, -9 )
 
-[node name="SpawnPoint" type="Node2D" parent="."]
+[node name="SpawnPoint" parent="." instance=ExtResource( 5 )]
 position = Vector2( -48, -1 )
-
-[node name="Sprite" type="Sprite" parent="SpawnPoint"]
-texture = ExtResource( 6 )
