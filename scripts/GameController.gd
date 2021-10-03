@@ -67,8 +67,10 @@ func animate_load(delta):
 		get_tree().paused = false
 
 func step():
+	current_level.shake()
 	current_weather.remove()
 	if weather_cards:
+		current_level.decay(len(weather_cards))
 		activate_weather()
 	else:
 		clean_up_level()
@@ -83,9 +85,9 @@ func finish_spawn():
 func clean_up_level():
 	level_poof_sound.play()
 	rainbow.visible = true
+	current_level.clean_up()
 	current_level.cloud_sprite.play("poof")
 	current_level.cloud_sprite.connect("animation_finished", self, "transition_level")
-	
 	get_tree().paused = true
 
 func transition_level():

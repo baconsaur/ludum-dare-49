@@ -1,7 +1,7 @@
 extends Node2D
 
 export var tile_offset = Vector2(0, 8)
-export var move_speed = 2.3
+export var move_speed = 2.8
 export var spawn_speed = 2.3
 export var spawn_offset = Vector2(0, 158)
 
@@ -19,6 +19,7 @@ onready var game = get_node("/root/Game")
 onready var coin_sound = $CoinSound
 onready var slide_sound = $SlideSound
 onready var jump_sound = $JumpSound
+onready var splash_sound = $SplashSound
 onready var sprite = $Sprite
 
 
@@ -37,9 +38,14 @@ func _process(delta):
 		is_moving = false
 		
 		if is_spawned:
+			if not game.weather_cards:
+				sprite.play("fall")
+			else:
+				play_idle_animation()
 			game.step()
 		else:
 			sprite.play("land")
+			splash_sound.play()
 			sprite.connect("animation_finished", self, "play_idle_animation")
 			is_spawned = true
 			directions = direction_colliders.instance()
@@ -48,12 +54,13 @@ func _process(delta):
 
 
 func play_idle_animation():
+	sprite.disconnect("animation_finished", self, "play_idle_animation")
 	var animation_direction = "front" if not last_direction or last_direction.y > 0 else "back"
 	sprite.play("idle_" + animation_direction)
 
 func set_spawn(pos):
 	spawn = pos - tile_offset
-	
+
 func move(pos):
 	if is_moving:
 		return
@@ -68,7 +75,6 @@ func move(pos):
 	else:
 		sprite.flip_h = false
 	sprite.play("jump_" + animation_direction)
-	sprite.connect("animation_finished", self, "play_idle_animation")
 
 func get_coin(value):
 	coin_sound.play()

@@ -18,7 +18,7 @@ font_data = ExtResource( 1 )
 [sub_resource type="StyleBoxEmpty" id=6]
 
 [sub_resource type="DynamicFont" id=7]
-size = 17
+size = 38
 font_data = ExtResource( 1 )
 
 [node name="Menu" type="Node2D"]
