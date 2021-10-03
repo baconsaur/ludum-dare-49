@@ -29,11 +29,10 @@ func _on_GridSpace_input_event(viewport, event, shape_idx):
 	if player.is_moving or not available:
 		return
 	if event is InputEventMouseButton and event.is_pressed():
-		player.move(position)
 		affect_player()
 
 func affect_player():
-	pass
+	player.move(position)
 
 func _on_GridSpace_area_shape_entered(area_id, area, area_shape, local_shape):
 	if area.name == "Directions":

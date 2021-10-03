@@ -3,7 +3,7 @@ extends Node2D
 export(Array, PackedScene) var levels = []
 export var level_start_position = Vector2(0, 200)
 export var level_exit_position = Vector2(0, -200)
-export var slide_level_speed = 45
+export var slide_level_speed = 50
 export var shake_time = 0.1
 export var shake_intensity = 1.5
 
@@ -20,6 +20,8 @@ var weather_card = preload("res://scenes/WeatherCard.tscn")
 var player_obj = preload("res://scenes/Player.tscn")
 var shake_countdown = 0
 var shake = false
+var scrolling_background = false
+var background_reached_top = true
 
 onready var constants = get_node("/root/Constants")
 onready var rainbow = $Rainbow
@@ -28,7 +30,9 @@ onready var level_enter_sound = $LevelEnterSound
 onready var level_poof_sound = $LevelPoofSound
 onready var freeze_sound = $FreezeSound
 onready var thaw_sound = $ThawSound
+onready var music = $Music
 onready var end_screen = $EndScreen
+onready var background = $Background
 onready var original_pos = position
 
 func _ready():
@@ -49,6 +53,19 @@ func _process(delta):
 	
 	if shake:
 		animate_shake(delta)
+	
+	if scrolling_background:
+		scroll_background(delta)
+
+func scroll_background(delta):
+	if background.position.y > -180:
+		background.position.y -= delta * slide_level_speed * 5
+		if background_reached_top and background.position.y <= 0:
+			background.position.y = 0
+			scrolling_background = false
+	else:
+		background.position.y = 180
+		background_reached_top = true
 
 func animate_shake(delta):
 	if shake_countdown > 0:
@@ -89,8 +106,8 @@ func animate_load(delta):
 func step():
 	current_level.shake()
 	current_weather.remove()
-	if weather_cards:
-		current_level.decay(len(weather_cards))
+	if len(weather_cards) > 1:
+		current_level.decay(len(weather_cards) - 1)
 		activate_weather()
 	else:
 		clean_up_level()
@@ -107,9 +124,16 @@ func finish_spawn():
 	rainbow.visible = false
 
 func clean_up_level():
+	if weather_cards:
+		var card = weather_cards[0]
+		if card.current_weather == constants.DOWN:
+			weather_cards[0].remove()
+			weather_cards = []
 	level_poof_sound.play()
 	rainbow.visible = true
 	current_level.clean_up()
+	scrolling_background = true
+	background_reached_top = false
 	current_level.cloud_sprite.play("poof")
 	current_level.cloud_sprite.connect("animation_finished", self, "transition_level")
 	get_tree().paused = true
@@ -140,11 +164,15 @@ func load_level():
 
 func set_up_weather():
 	for event in current_level.weather_events:
-		var new_card = weather_card.instance()
-		weather_cards.append(new_card)
-		ui.place_card(new_card)
-		new_card.set_weather(event)
+		add_weather_card(event)
+	add_weather_card(constants.DOWN)
 	activate_weather()
+
+func add_weather_card(event):
+	var new_card = weather_card.instance()
+	weather_cards.append(new_card)
+	ui.place_card(new_card)
+	new_card.set_weather(event)
 
 func activate_weather():
 	if not weather_cards:
@@ -174,3 +202,9 @@ func play_weather_sound(weather_effect):
 func spawn_player():
 	player.set_spawn(current_level.spawn_point.position)
 	player.respawn()
+
+func mute():
+	music.stream_paused = true
+
+func unmute():
+	music.stream_paused = false

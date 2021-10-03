@@ -26,17 +26,11 @@ position = Vector2( -16, -17 )
 [node name="GridSpace4" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( 0, -25 )
 
-[node name="GridSpace11" parent="Grid" instance=ExtResource( 1 )]
-position = Vector2( -32, -9 )
-
 [node name="GridSpace14" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( 0, 23 )
 
 [node name="GridSpace15" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( -16, 15 )
-
-[node name="GridSpace16" parent="Grid" instance=ExtResource( 1 )]
-position = Vector2( -32, 7 )
 
 [node name="GridSpace13" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( 48, -1 )
@@ -52,6 +46,12 @@ position = Vector2( 16, 15 )
 
 [node name="WaterGridSpace4" parent="Grid" instance=ExtResource( 4 )]
 position = Vector2( 16, -17 )
+
+[node name="WaterGridSpace7" parent="Grid" instance=ExtResource( 4 )]
+position = Vector2( -32, -9 )
+
+[node name="WaterGridSpace8" parent="Grid" instance=ExtResource( 4 )]
+position = Vector2( -32, 7 )
 
 [node name="Coin" parent="." instance=ExtResource( 3 )]
 position = Vector2( 48, -9 )

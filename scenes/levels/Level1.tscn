@@ -16,20 +16,14 @@ weather_events = [ "sun", "sun", "sun", "sun", "sun" ]
 
 [node name="Grid" type="Node2D" parent="."]
 
-[node name="GridSpace7" parent="Grid" instance=ExtResource( 1 )]
-position = Vector2( -20, 3 )
-
 [node name="GridSpace11" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( -36, -5 )
 
 [node name="GridSpace10" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( -4, 11 )
 
-[node name="GridSpace14" parent="Grid" instance=ExtResource( 1 )]
-position = Vector2( 12, -13 )
-
-[node name="GridSpace17" parent="Grid" instance=ExtResource( 1 )]
-position = Vector2( -4, -5 )
+[node name="GridSpace18" parent="Grid" instance=ExtResource( 1 )]
+position = Vector2( -20, 3 )
 
 [node name="GridSpace12" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( 12, 19 )
@@ -40,13 +34,13 @@ position = Vector2( 28, 11 )
 [node name="GridSpace15" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( 44, 3 )
 
-[node name="GridSpace16" parent="Grid" instance=ExtResource( 1 )]
-position = Vector2( 28, -5 )
-
 [node name="Coin" parent="." instance=ExtResource( 3 )]
-position = Vector2( 28, 3 )
+position = Vector2( 44, -5 )
 
 [node name="Coin2" parent="." instance=ExtResource( 3 )]
+position = Vector2( -20, -5 )
+
+[node name="Coin3" parent="." instance=ExtResource( 3 )]
 position = Vector2( -20, -5 )
 
 [node name="SpawnPoint" parent="." instance=ExtResource( 4 )]

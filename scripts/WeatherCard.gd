@@ -23,14 +23,22 @@ func _process(delta):
 	if is_instance_valid(temp_duplicate):
 		temp_duplicate.scale += Vector2(delta * pulse_speed, delta * pulse_speed)
 		temp_duplicate.modulate.a -= delta * pulse_speed / 8
+		if current_weather == constants.DOWN:
+			sprite.scale += Vector2(delta * pulse_speed * 3, delta * pulse_speed * 3)
+			sprite.modulate.a -= delta * pulse_speed / 6
 		if temp_duplicate.modulate.a <= 0:
 			temp_duplicate.queue_free()
+			if current_weather == constants.DOWN:
+				queue_free()
 
 func set_weather(weather_state):
 	current_weather = weather_state
 	sprite.set_animation(current_weather)
 	if active:
 		display_active()
+	if current_weather == constants.DOWN:
+		modulate = Color(1,1,1)
+		sprite.modulate = Color("3d80a3")
 
 func activate():
 	active = true
@@ -43,6 +51,9 @@ func display_active():
 	modulate = Color(1,1,1)
 
 func remove():
+	if current_weather == constants.DOWN:
+		remove_down_arrow()
+		return
 	sprite.stop()
 	sprite.modulate = Color("3d80a3")
 	var old_global_pos = rect_global_position
@@ -52,3 +63,8 @@ func remove():
 	rect_global_position = old_global_pos
 	is_leaving = true
 	sprite.stop()
+
+func remove_down_arrow():
+	sprite.modulate = Color(1,1,1)
+	temp_duplicate = sprite.duplicate()
+	get_parent().add_child(temp_duplicate)

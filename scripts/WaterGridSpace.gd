@@ -1,10 +1,6 @@
 extends "res://scripts/GridSpace.gd"
 
 onready var effect_sprite = $EffectSprite
-#onready var default_sprite = preload("res://sprites/water_tile.png")
-#onready var rain_sprite = preload("res://sprites/water_tile_rain.png")
-#onready var snow_sprite = preload("res://sprites/water_tile_snow.png")
-#onready var storm_sprite = preload("res://sprites/water_tile_storm.png")
 
 func set_weather(new_weather):
 	weather = new_weather
@@ -25,7 +21,9 @@ func affect_player():
 	if weather == constants.STORM:
 		player.respawn()
 	if weather == constants.RAIN:
-		game.load_next_level()
+		player.fall_through(position)
 	if weather == constants.SNOW:
+		.affect_player()
 		player.slide()
-	.affect_player()
+	else:
+		.affect_player()

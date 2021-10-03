@@ -11,7 +11,7 @@
 pause_mode = 2
 position = Vector2( 0, 1 )
 script = ExtResource( 6 )
-weather_events = [ "cloud", "snow", "cloud", "snow", "snow", "snow" ]
+weather_events = [ "sun", "snow", "sun", "snow", "snow", "snow" ]
 
 [node name="CloudSprite" parent="." instance=ExtResource( 2 )]
 

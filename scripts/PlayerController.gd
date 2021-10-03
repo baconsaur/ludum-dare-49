@@ -4,6 +4,7 @@ export var tile_offset = Vector2(0, 8)
 export var move_speed = 2.8
 export var spawn_speed = 2.3
 export var spawn_offset = Vector2(0, 158)
+export var fall_time = 5
 
 var spawn = Vector2.ZERO
 var last_direction = null
@@ -13,6 +14,8 @@ var directions = null
 var direction_colliders = preload("res://scenes/Directions.tscn")
 var start_position = null
 var stop_next = false
+var fall_countdown = 0
+var falling = false
 
 onready var target_position = position
 onready var game = get_node("/root/Game")
@@ -37,8 +40,13 @@ func _process(delta):
 		start_position = null
 		is_moving = false
 		
+		if falling:
+			falling = false
+			game.clean_up_level()
+			return
+		
 		if is_spawned:
-			if not game.weather_cards:
+			if len(game.weather_cards) <= 1:
 				sprite.play("fall")
 			else:
 				play_idle_animation()
@@ -70,12 +78,14 @@ func move(pos):
 	last_direction = ( target_position - position )
 	is_moving = true
 	
+	var prefix = "fall_through_" if falling else "jump_"
+	
 	var animation_direction = "front" if last_direction.y > 0 else "back"
 	if last_direction.x < 0:
 		sprite.flip_h = true
 	else:
 		sprite.flip_h = false
-	sprite.play("jump_" + animation_direction)
+	sprite.play(prefix + animation_direction)
 
 func get_coin(value):
 	coin_sound.play()
@@ -120,3 +130,7 @@ func check_slide(start_position):
 			return true
 
 	return false
+
+func fall_through(pos):
+	falling = true
+	move(pos)

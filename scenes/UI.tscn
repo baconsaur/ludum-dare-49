@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scripts/UI.gd" type="Script" id=1]
 [ext_resource path="res://sprites/coin.png" type="Texture" id=2]
 [ext_resource path="res://fonts/dpcomic.regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://sprites/mute.png" type="Texture" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -31,6 +32,37 @@ animations = [ {
 [sub_resource type="DynamicFont" id=6]
 size = 38
 font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+[sub_resource type="StyleBoxEmpty" id=11]
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 4 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=14]
+animations = [ {
+"frames": [ SubResource( 12 ) ],
+"loop": true,
+"name": "muted",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 13 ) ],
+"loop": true,
+"name": "unmuted",
+"speed": 5.0
+} ]
 
 [node name="UI" type="Control"]
 anchor_right = 1.0
@@ -61,7 +93,7 @@ __meta__ = {
 position = Vector2( 504, 24 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 5 )
-frame = 2
+frame = 3
 playing = true
 
 [node name="Score" type="Label" parent="."]
@@ -76,3 +108,24 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="MuteButton" type="Button" parent="."]
+pause_mode = 2
+margin_right = 64.0
+margin_bottom = 64.0
+custom_styles/hover = SubResource( 7 )
+custom_styles/pressed = SubResource( 8 )
+custom_styles/focus = SubResource( 9 )
+custom_styles/disabled = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="AnimatedSprite" parent="MuteButton"]
+position = Vector2( 32, 32 )
+scale = Vector2( 3, 3 )
+frames = SubResource( 14 )
+animation = "unmuted"
+
+[connection signal="pressed" from="MuteButton" to="." method="_on_Button_pressed"]

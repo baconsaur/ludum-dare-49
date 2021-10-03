@@ -22,6 +22,9 @@ func _ready():
 	randomize()
 
 func _process(delta):
+	if current_weather and current_weather != constants.SUN:
+		show_weather_effect()
+	
 	if not shake:
 		return
 
@@ -44,13 +47,12 @@ func clean_up():
 func decay(steps_left):
 	cloud_sprite.play("decay_" + str(steps_left))
 
-func shake():
-	shake = true
-	shake_countdown = shake_time
-	
-	var num_drops = rand_range(3, max_drops)
-	if current_weather and current_weather == constants.RAIN:
-		num_drops *= 2
+func show_weather_effect(impact=false):
+	var num_drops = randi() % 2
+	if impact:
+		num_drops = rand_range(3, max_drops)
+		if current_weather and current_weather == constants.RAIN:
+			num_drops *= 2
 
 	for i in range(num_drops):
 		var drop = raindrop_sprite.instance()
@@ -58,3 +60,8 @@ func shake():
 		drop.position.x = rand_range(drop_spawn_min_x, drop_spawn_max_x)
 		if current_weather and current_weather == constants.SNOW:
 			drop.play(constants.SNOW)
+
+func shake():
+	shake = true
+	shake_countdown = shake_time
+	show_weather_effect(true)
