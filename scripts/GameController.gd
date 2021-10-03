@@ -3,12 +3,14 @@ extends Node2D
 export(Array, PackedScene) var levels = []
 export var level_start_position = Vector2(0, 200)
 export var level_exit_position = Vector2(0, -200)
-export var slide_level_speed = 30
+export var slide_level_speed = 45
 
 var score = 0
 var level_loaded = false
+var animating_game_over = false
 var level_cleared = true
 var current_weather = null
+var last_weather_effect = null
 var current_level = null
 var player = null
 var weather_cards = []
@@ -20,6 +22,9 @@ onready var rainbow = $Rainbow
 onready var ui = $CanvasLayer/UI
 onready var level_enter_sound = $LevelEnterSound
 onready var level_poof_sound = $LevelPoofSound
+onready var freeze_sound = $FreezeSound
+onready var thaw_sound = $ThawSound
+onready var end_screen = $EndScreen
 
 func _ready():
 	player = player_obj.instance()
@@ -32,6 +37,17 @@ func _process(delta):
 	
 	if not level_cleared:
 		animate_clear(delta)
+	
+	if animating_game_over:
+		animate_end_screen(delta)
+
+func animate_end_screen(delta):
+	if end_screen.position.y > 0:
+		end_screen.position.y -= delta * slide_level_speed * 3
+	else:
+		end_screen.position.y = 0
+		animating_game_over = false
+		ui.display_end(score)
 
 func animate_clear(delta):
 	if not is_equal_approx(player.position.y, level_exit_position.y):
@@ -57,6 +73,10 @@ func step():
 	else:
 		clean_up_level()
 
+func update_score(value):
+	score += value
+	ui.update_score(score)
+
 func finish_spawn():
 	rainbow.visible = false
 
@@ -77,7 +97,8 @@ func next_level():
 	if levels:
 		load_level()
 	else:
-		print("game over")
+		player.queue_free()
+		animating_game_over = true
 
 func load_level():
 	level_enter_sound.play()
@@ -104,7 +125,11 @@ func activate_weather():
 		return
 	current_weather = weather_cards.pop_front()
 	current_weather.activate()
-	current_level.set_weather_effects(current_weather.current_weather)
+	
+	var weather_effect = current_weather.current_weather
+	play_weather_sound(weather_effect)
+	current_level.set_weather_effects(weather_effect)
+	last_weather_effect = weather_effect
 
 func teardown():
 	if is_instance_valid(current_weather):
@@ -113,6 +138,12 @@ func teardown():
 		card.queue_free()
 	weather_cards = []
 	current_level.queue_free()
+
+func play_weather_sound(weather_effect):
+	if weather_effect == constants.SNOW:
+		freeze_sound.play()
+	elif last_weather_effect and last_weather_effect == constants.SNOW:
+		thaw_sound.play()
 
 func spawn_player():
 	player.set_spawn(current_level.spawn_point.position)

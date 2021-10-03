@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/levels/Level1.tscn" type="PackedScene" id=1]
 [ext_resource path="res://sprites/rainbow.png" type="Texture" id=2]
@@ -8,13 +8,18 @@
 [ext_resource path="res://scenes/levels/Level2.tscn" type="PackedScene" id=6]
 [ext_resource path="res://sound/poof.wav" type="AudioStream" id=7]
 [ext_resource path="res://sprites/bg_cloud.png" type="Texture" id=8]
+[ext_resource path="res://sound/thaw.wav" type="AudioStream" id=9]
+[ext_resource path="res://sound/freeze.wav" type="AudioStream" id=10]
+[ext_resource path="res://sprites/end_screen.png" type="Texture" id=11]
+[ext_resource path="res://scenes/levels/Level3.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/levels/Level4.tscn" type="PackedScene" id=13]
 
 [node name="Game" type="Node2D"]
 pause_mode = 2
 position = Vector2( 512, 424 )
 scale = Vector2( 3, 3 )
 script = ExtResource( 4 )
-levels = [ ExtResource( 1 ), ExtResource( 6 ) ]
+levels = [ ExtResource( 1 ), ExtResource( 6 ), ExtResource( 12 ), ExtResource( 13 ) ]
 
 [node name="bg_cloud" type="Sprite" parent="."]
 position = Vector2( -98.6667, -88 )
@@ -47,3 +52,13 @@ stream = ExtResource( 3 )
 
 [node name="LevelPoofSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 7 )
+
+[node name="ThawSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 9 )
+
+[node name="FreezeSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 10 )
+
+[node name="EndScreen" type="Sprite" parent="."]
+position = Vector2( 0, 125.333 )
+texture = ExtResource( 11 )
