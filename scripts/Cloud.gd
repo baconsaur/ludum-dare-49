@@ -18,6 +18,9 @@ onready var spawn_point = $SpawnPoint
 onready var cloud_sprite = $CloudSprite
 
 
+func _ready():
+	randomize()
+
 func _process(delta):
 	if not shake:
 		return
@@ -46,6 +49,9 @@ func shake():
 	shake_countdown = shake_time
 	
 	var num_drops = rand_range(3, max_drops)
+	if current_weather and current_weather == constants.RAIN:
+		num_drops *= 2
+
 	for i in range(num_drops):
 		var drop = raindrop_sprite.instance()
 		add_child(drop)

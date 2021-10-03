@@ -45,6 +45,7 @@ func _process(delta):
 			game.step()
 		else:
 			sprite.play("land")
+			game.start_shake()
 			splash_sound.play()
 			sprite.connect("animation_finished", self, "play_idle_animation")
 			is_spawned = true

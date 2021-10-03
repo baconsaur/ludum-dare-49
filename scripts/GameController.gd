@@ -4,6 +4,8 @@ export(Array, PackedScene) var levels = []
 export var level_start_position = Vector2(0, 200)
 export var level_exit_position = Vector2(0, -200)
 export var slide_level_speed = 45
+export var shake_time = 0.1
+export var shake_intensity = 1.5
 
 var score = 0
 var level_loaded = false
@@ -16,6 +18,8 @@ var player = null
 var weather_cards = []
 var weather_card = preload("res://scenes/WeatherCard.tscn")
 var player_obj = preload("res://scenes/Player.tscn")
+var shake_countdown = 0
+var shake = false
 
 onready var constants = get_node("/root/Constants")
 onready var rainbow = $Rainbow
@@ -25,11 +29,13 @@ onready var level_poof_sound = $LevelPoofSound
 onready var freeze_sound = $FreezeSound
 onready var thaw_sound = $ThawSound
 onready var end_screen = $EndScreen
+onready var original_pos = position
 
 func _ready():
 	player = player_obj.instance()
 	add_child(player)
 	load_level()
+	randomize()
 
 func _process(delta):
 	if not level_loaded:
@@ -40,6 +46,20 @@ func _process(delta):
 	
 	if animating_game_over:
 		animate_end_screen(delta)
+	
+	if shake:
+		animate_shake(delta)
+
+func animate_shake(delta):
+	if shake_countdown > 0:
+		shake_countdown -= delta
+		position += Vector2(
+			rand_range(-shake_intensity, shake_intensity),
+			rand_range(-shake_intensity, shake_intensity)
+		)
+	else:
+		position = original_pos
+		shake = false
 
 func animate_end_screen(delta):
 	if end_screen.position.y > 0:
@@ -74,6 +94,10 @@ func step():
 		activate_weather()
 	else:
 		clean_up_level()
+
+func start_shake():
+	shake = true
+	shake_countdown = shake_time
 
 func update_score(value):
 	score += value

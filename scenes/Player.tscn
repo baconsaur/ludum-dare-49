@@ -195,7 +195,7 @@ polygon = PoolVector2Array( -32.8074, 0, 0, -9.91562, 32.8074, 0, 0, 9.91562 )
 pause_mode = 2
 frames = SubResource( 35 )
 animation = "idle_front"
-frame = 6
+frame = 1
 playing = true
 
 [node name="CoinSound" type="AudioStreamPlayer2D" parent="."]
