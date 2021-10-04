@@ -30,6 +30,7 @@ onready var level_enter_sound = $LevelEnterSound
 onready var level_poof_sound = $LevelPoofSound
 onready var freeze_sound = $FreezeSound
 onready var thaw_sound = $ThawSound
+onready var wind_sound = $WindSound
 onready var music = $Music
 onready var end_screen = $EndScreen
 onready var background = $Background
@@ -194,10 +195,16 @@ func teardown():
 	current_level.queue_free()
 
 func play_weather_sound(weather_effect):
+	if weather_effect == constants.WIND:
+		wind_sound.play()
+	else:
+		wind_sound.stop()
+
 	if weather_effect == constants.SNOW:
 		freeze_sound.play()
 	elif last_weather_effect and last_weather_effect == constants.SNOW:
 		thaw_sound.play()
+	
 
 func spawn_player():
 	player.set_spawn(current_level.spawn_point.position)

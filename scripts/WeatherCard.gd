@@ -9,7 +9,7 @@ var temp_duplicate = null
 var is_leaving = false
 
 onready var constants = get_node("/root/Constants")
-onready var current_weather = constants.CLOUD
+onready var current_weather = constants.SUN
 onready var sprite = $AnimatedSprite
 
 func _process(delta):

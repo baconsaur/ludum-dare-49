@@ -29,6 +29,9 @@ position = Vector2( 16, 15 )
 [node name="GridSpace28" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( 0, 23 )
 
+[node name="GridSpace30" parent="Grid" instance=ExtResource( 1 )]
+position = Vector2( -16, 15 )
+
 [node name="GridSpace21" parent="Grid" instance=ExtResource( 1 )]
 position = Vector2( -48, -1 )
 

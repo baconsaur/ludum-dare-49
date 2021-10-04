@@ -11,7 +11,7 @@ onready var cloud = get_parent()
 onready var game = get_node("/root/Game")
 onready var inactive_color = grid_sprite.modulate
 onready var weather = constants.CLOUD
-
+	
 func _process(delta):
 	if player.is_moving and grid_sprite.visible:
 		grid_sprite.visible = false
@@ -25,6 +25,9 @@ func set_available():
 		available = true
 		grid_sprite.modulate = available_color
 
+func player_is_on_tile():
+	return player.position.is_equal_approx(position - player.tile_offset)
+
 func _on_GridSpace_input_event(viewport, event, shape_idx):
 	if player.is_moving or not available:
 		return
@@ -33,6 +36,8 @@ func _on_GridSpace_input_event(viewport, event, shape_idx):
 
 func affect_player():
 	player.move(position)
+	if weather == constants.WIND:
+		player.queue_wind()
 
 func _on_GridSpace_area_shape_entered(area_id, area, area_shape, local_shape):
 	if area.name == "Directions":

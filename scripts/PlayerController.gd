@@ -16,9 +16,13 @@ var start_position = null
 var stop_next = false
 var fall_countdown = 0
 var falling = false
+var wind_direction = Vector2(-16, 8)
+var free_move = false
+var should_add_wind = false
 
 onready var target_position = position
 onready var game = get_node("/root/Game")
+onready var constants = get_node("/root/Constants")
 onready var coin_sound = $CoinSound
 onready var slide_sound = $SlideSound
 onready var jump_sound = $JumpSound
@@ -28,39 +32,48 @@ onready var sprite = $Sprite
 
 func _process(delta):
 	if is_moving and not position.is_equal_approx(target_position):
-		if start_position == null:
-			start_position = position
-		var progress = position.distance_to(start_position) / start_position.distance_to(target_position)
-		var step = progress + delta * (move_speed if is_spawned else spawn_speed)
-		position = lerp(start_position, target_position, step)
-		if step > 1:
-			position = target_position
-	elif is_moving:
+		slide_character(delta)
+
+func slide_character(delta):
+	if start_position == null:
+		start_position = position
+	var progress = position.distance_to(start_position) / start_position.distance_to(target_position)
+	var step = progress + delta * (move_speed if is_spawned else spawn_speed)
+	position = lerp(start_position, target_position, step)
+	if step > 1:
+		position = target_position
+	if position.is_equal_approx(target_position):
 		position = target_position
 		start_position = null
 		is_moving = false
-		
-		if falling:
-			falling = false
-			game.clean_up_level()
-			return
-		
-		if is_spawned:
-			if len(game.weather_cards) <= 1:
-				sprite.play("fall")
-			else:
-				play_idle_animation()
-			game.step()
+		if should_add_wind:
+			add_wind()
 		else:
-			sprite.play("land")
-			game.start_shake()
-			splash_sound.play()
-			sprite.connect("animation_finished", self, "play_idle_animation")
-			is_spawned = true
-			directions = direction_colliders.instance()
-			add_child(directions)
-			game.finish_spawn()
+			end_movement()
 
+func end_movement():
+	if falling:
+		falling = false
+		game.clean_up_level()
+		return
+
+	if is_spawned:
+		if len(game.weather_cards) <= 1:
+			sprite.play("fall")
+		else:
+			play_idle_animation()
+			if should_add_wind:
+				add_wind()
+		game.step()
+	else:
+		sprite.play("land")
+		game.start_shake()
+		splash_sound.play()
+		sprite.connect("animation_finished", self, "play_idle_animation")
+		is_spawned = true
+		directions = direction_colliders.instance()
+		add_child(directions)
+		game.finish_spawn()
 
 func play_idle_animation():
 	sprite.disconnect("animation_finished", self, "play_idle_animation")
@@ -101,23 +114,36 @@ func respawn():
 	is_moving = true
 	sprite.play("fall")
 
+func queue_wind():
+	should_add_wind = true
+
+func add_wind():
+	should_add_wind = false
+	var new_start_position = global_position
+	if check_slide(new_start_position, wind_direction):
+		target_position += wind_direction
+		slide_sound.play()
+		is_moving = true
+	else:
+		end_movement()
+
 func slide():
 	var slide_count = 0
-	var start_position = global_position
+	var new_start_position = global_position
 	stop_next = false
-	
-	while check_slide(start_position):
-		start_position += last_direction * 3
+
+	while check_slide(new_start_position, last_direction):
+		new_start_position += last_direction * 3
 		slide_count += 1
 		if stop_next:
 			break
 	target_position = position + last_direction * slide_count
 	slide_sound.play()
 
-func check_slide(start_position):
+func check_slide(new_start_position, direction, wind=false):
 	var space_state = get_world_2d().direct_space_state
 	
-	var next_position = start_position + (last_direction * 3)
+	var next_position = new_start_position + (direction * 3)
 	var next_tile = next_position + tile_offset
 	var next_tile_areas = space_state.intersect_point(
 		next_tile, 1, [], 2147483647, false, true)
@@ -126,7 +152,8 @@ func check_slide(start_position):
 		if "WaterGridSpace" in area.collider.name:
 			return true
 		if "GridSpace" in area.collider.name:
-			stop_next = true
+			if not wind:
+				stop_next = true
 			return true
 
 	return false

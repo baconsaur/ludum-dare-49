@@ -8,7 +8,7 @@ func set_weather(new_weather):
 		effect_sprite.play(constants.STORM)
 	elif weather == constants.RAIN:
 		effect_sprite.play(constants.RAIN)
-		if player.position.is_equal_approx(position + player.tile_offset):
+		if player_is_on_tile():
 			player.fall_through(position, true)
 	elif weather == constants.SNOW:
 		effect_sprite.play(constants.SNOW)

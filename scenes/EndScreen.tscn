@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scripts/EndScreen.gd" type="Script" id=1]
 [ext_resource path="res://fonts/dpcomic.regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://sound/coin.wav" type="AudioStream" id=3]
+[ext_resource path="res://scenes/Sparkle.tscn" type="PackedScene" id=4]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -103,6 +104,28 @@ text = " coins collected"
 pause_mode = 2
 position = Vector2( 0, 224 )
 stream = ExtResource( 3 )
+
+[node name="Sparkle" parent="." instance=ExtResource( 4 )]
+position = Vector2( 440, 512 )
+
+[node name="Sparkle2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 520, 536 )
+
+[node name="Sparkle4" parent="." instance=ExtResource( 4 )]
+position = Vector2( 504, 504 )
+frame = 5
+
+[node name="Sparkle5" parent="." instance=ExtResource( 4 )]
+position = Vector2( 560, 552 )
+frame = 5
+
+[node name="Sparkle6" parent="." instance=ExtResource( 4 )]
+position = Vector2( 474.5, 554.5 )
+frame = 5
+
+[node name="Sparkle7" parent="." instance=ExtResource( 4 )]
+position = Vector2( 416, 544 )
+frame = 4
 
 [connection signal="pressed" from="RestartButton" to="." method="_on_RestartButton_pressed"]
 [connection signal="pressed" from="MenuButton" to="." method="_on_MenuButton_pressed"]
