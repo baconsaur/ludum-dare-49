@@ -10,7 +10,7 @@ config_version=4
 
 [application]
 
-config/name="Ludum Dare 49"
+config/name="Shifty Showers"
 run/main_scene="res://scenes/Menu.tscn"
 config/icon="res://icon.png"
 

@@ -30,7 +30,7 @@ animations = [ {
 } ]
 
 [sub_resource type="DynamicFont" id=6]
-size = 38
+size = 46
 font_data = ExtResource( 3 )
 
 [sub_resource type="StyleBoxEmpty" id=7]
@@ -90,18 +90,18 @@ __meta__ = {
 }
 
 [node name="CoinIcon" type="AnimatedSprite" parent="."]
-position = Vector2( 504, 24 )
+position = Vector2( 504, 25.6856 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 5 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Score" type="Label" parent="."]
-margin_left = 534.0
+margin_left = 530.428
 margin_top = 1.0
-margin_right = 551.0
-margin_bottom = 51.0
-rect_min_size = Vector2( 0, 50 )
+margin_right = 550.428
+margin_bottom = 47.0
+rect_min_size = Vector2( 0, 46 )
 custom_fonts/font = SubResource( 6 )
 text = "0"
 valign = 1
