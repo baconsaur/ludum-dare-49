@@ -18,10 +18,14 @@ var player = null
 var weather_cards = []
 var weather_card = preload("res://scenes/WeatherCard.tscn")
 var player_obj = preload("res://scenes/Player.tscn")
+var music_obj = preload("res://scenes/Music.tscn")
+var wind_sound_obj = preload("res://scenes/WindSound.tscn")
 var shake_countdown = 0
 var shake = false
 var scrolling_background = false
 var background_reached_top = true
+var music = null
+var wind_sound = null
 
 onready var constants = get_node("/root/Constants")
 onready var rainbow = $Rainbow
@@ -30,8 +34,6 @@ onready var level_enter_sound = $LevelEnterSound
 onready var level_poof_sound = $LevelPoofSound
 onready var freeze_sound = $FreezeSound
 onready var thaw_sound = $ThawSound
-onready var wind_sound = $WindSound
-onready var music = $Music
 onready var end_screen = $EndScreen
 onready var background = $Background
 onready var original_pos = position
@@ -40,6 +42,7 @@ func _ready():
 	player = player_obj.instance()
 	add_child(player)
 	load_level()
+	unmute()
 	randomize()
 
 func _process(delta):
@@ -107,6 +110,8 @@ func animate_load(delta):
 func step():
 	current_level.shake()
 	current_weather.remove()
+	if is_instance_valid(wind_sound):
+		wind_sound.queue_free()
 	if len(weather_cards) > 1:
 		current_level.decay(len(weather_cards) - 1)
 		activate_weather()
@@ -196,9 +201,8 @@ func teardown():
 
 func play_weather_sound(weather_effect):
 	if weather_effect == constants.WIND:
-		wind_sound.play()
-	else:
-		wind_sound.stop()
+		wind_sound = wind_sound_obj.instance()
+		add_child(wind_sound)
 
 	if weather_effect == constants.SNOW:
 		freeze_sound.play()
@@ -211,7 +215,8 @@ func spawn_player():
 	player.respawn()
 
 func mute():
-	music.stream_paused = true
+	music.queue_free()
 
 func unmute():
-	music.stream_paused = false
+	music = music_obj.instance()
+	add_child(music)
