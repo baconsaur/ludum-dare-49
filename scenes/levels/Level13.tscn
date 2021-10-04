@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/GridSpace.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/CloudSprite.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Coin.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/WaterGridSpace.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/SpawnPoint.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/Cloud.gd" type="Script" id=6]
+
+[node name="Cloud" type="Node2D"]
+pause_mode = 2
+position = Vector2( 0, 1 )
+script = ExtResource( 6 )
+weather_events = [ "sun", "snow", "sun", "wind", "snow", "rain", "snow", "rain", "snow" ]
+
+[node name="CloudSprite" parent="." instance=ExtResource( 2 )]
+
+[node name="Grid" type="Node2D" parent="."]
+
+[node name="GridSpace4" parent="Grid" instance=ExtResource( 1 )]
+position = Vector2( 0, -25 )
+
+[node name="GridSpace13" parent="Grid" instance=ExtResource( 1 )]
+position = Vector2( 48, -1 )
+
+[node name="GridSpace17" parent="Grid" instance=ExtResource( 1 )]
+position = Vector2( 32, -9 )
+
+[node name="GridSpace14" parent="Grid" instance=ExtResource( 1 )]
+position = Vector2( 16, -17 )
+
+[node name="GridSpace18" parent="Grid" instance=ExtResource( 1 )]
+position = Vector2( -16, -1 )
+
+[node name="WaterGridSpace" parent="Grid" instance=ExtResource( 4 )]
+position = Vector2( 32, 7 )
+
+[node name="WaterGridSpace2" parent="Grid" instance=ExtResource( 4 )]
+position = Vector2( 16, -1 )
+
+[node name="WaterGridSpace3" parent="Grid" instance=ExtResource( 4 )]
+position = Vector2( 0, -9 )
+
+[node name="WaterGridSpace4" parent="Grid" instance=ExtResource( 4 )]
+position = Vector2( 16, 15 )
+
+[node name="WaterGridSpace5" parent="Grid" instance=ExtResource( 4 )]
+position = Vector2( 0, 23 )
+
+[node name="Coin" parent="." instance=ExtResource( 3 )]
+position = Vector2( 16, -9 )
+
+[node name="Coin3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, 15 )
+
+[node name="Coin2" parent="." instance=ExtResource( 3 )]
+position = Vector2( -16, -9 )
+
+[node name="SpawnPoint" parent="." instance=ExtResource( 5 )]
+position = Vector2( 0, -25 )

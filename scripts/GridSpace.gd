@@ -29,7 +29,7 @@ func player_is_on_tile():
 	return player.position.is_equal_approx(position - player.tile_offset)
 
 func _on_GridSpace_input_event(viewport, event, shape_idx):
-	if player.is_moving or not available:
+	if player.is_moving or player.movement_disabled or not available:
 		return
 	if event is InputEventMouseButton and event.is_pressed():
 		affect_player()

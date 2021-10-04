@@ -16,6 +16,7 @@ var start_position = null
 var stop_next = false
 var fall_countdown = 0
 var falling = false
+var movement_disabled = false
 var wind_direction = Vector2(-16, 8)
 var free_move = false
 var should_add_wind = false
@@ -163,8 +164,10 @@ func fall_through(pos, mini_fall=false):
 		falling = true
 		move(pos)
 		return
+	movement_disabled = true
 	var animation_direction = "front" if last_direction.y > 0 else "back"
 	sprite.play("fall_through_" + animation_direction)
 	sprite.frame = 4
 	yield(get_tree().create_timer(0.5), "timeout")
 	game.clean_up_level()
+	movement_disabled = false
