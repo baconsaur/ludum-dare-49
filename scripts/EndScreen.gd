@@ -38,6 +38,8 @@ func count_score(score):
 	total_score = score
 	count_cooldown = count_time
 
-
-func _on_Button_pressed():
+func _on_RestartButton_pressed():
 	get_tree().reload_current_scene()
+
+func _on_MenuButton_pressed():
+	get_tree().change_scene("res://scenes/Menu.tscn")

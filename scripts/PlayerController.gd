@@ -131,6 +131,13 @@ func check_slide(start_position):
 
 	return false
 
-func fall_through(pos):
-	falling = true
-	move(pos)
+func fall_through(pos, mini_fall=false):
+	if not mini_fall:
+		falling = true
+		move(pos)
+		return
+	var animation_direction = "front" if last_direction.y > 0 else "back"
+	sprite.play("fall_through_" + animation_direction)
+	sprite.frame = 4
+	yield(get_tree().create_timer(0.5), "timeout")
+	game.clean_up_level()

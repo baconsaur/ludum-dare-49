@@ -93,7 +93,6 @@ __meta__ = {
 position = Vector2( 504, 24 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 5 )
-frame = 3
 playing = true
 
 [node name="Score" type="Label" parent="."]

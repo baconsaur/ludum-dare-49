@@ -8,3 +8,9 @@ func _on_StartButton_pressed():
 
 func _on_ExitButton_pressed():
 	get_tree().quit()
+
+func _on_CreditsButton_pressed():
+	get_tree().change_scene("res://scenes/Credits.tscn")
+
+func _on_MenuButton_pressed():
+	get_tree().change_scene("res://scenes/Menu.tscn")
